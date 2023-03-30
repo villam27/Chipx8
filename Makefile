@@ -1,7 +1,9 @@
 NAME		=	chipx8.out
 VERSION		=	0.0.1
 
-SRCS		=	srcs/main.c
+SRCS		=	srcs/main.c \
+				srcs/renderer.c \
+				srcs/window.c
 
 HEADERS		=	includes
 
@@ -18,11 +20,11 @@ ECHO		=	echo -e
 all	:	$(NAME)
 
 $(NAME)	:	$(OBJS)
-		$(CC) -o $(NAME) $(CFLAGS) $(OBJS) $(SDLFLAGS)
+	$(CC) -o $(NAME) $(CFLAGS) $(OBJS) $(SDLFLAGS)
 
 $(BUILDDIR)/%.o	:	%.c $(HEADERS) Makefile
-		@mkdir -p $(@D)
-		$(CC) $(CFLAGS) -I$(HEADERS) -c $< -o $@
+	@mkdir -p $(@D)
+	$(CC) $(CFLAGS) -I$(HEADERS) -c $< -o $@
 
 clean :
 	-rm -f $(OBJS)
@@ -31,3 +33,5 @@ fclean : clean
 	-rm -f $(NAME)
 
 re : fclean all
+
+.PHONY: all clean fclean re
