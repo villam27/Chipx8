@@ -3,6 +3,8 @@ VERSION		=	0.0.1
 
 SRCS		=	srcs/main.c \
 				srcs/renderer.c \
+				srcs/components.c \
+				srcs/tasks.c \
 				srcs/window.c
 
 HEADERS		=	includes

@@ -2,6 +2,7 @@
 #define WINDOW_H
 
 #include <stdio.h>
+#include <tasks.h>
 #include <SDL2/SDL.h>
 #define WIDTH 64
 #define HEIGHT 32
@@ -20,7 +21,7 @@ typedef struct s_win_data
 }	t_win_data;
 
 t_win_data	*init_window(const int scale);
-void		loop(t_win_data *data);
+void		loop(t_win_data *data, t_components *cpts);
 void		destroy_window(t_win_data	*data);
 
 #endif //WINDOW_H

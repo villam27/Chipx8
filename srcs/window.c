@@ -19,10 +19,12 @@ t_win_data	*init_window(const int scale)
 	return (data);
 }
 
-void	loop(t_win_data *data)
+void	loop(t_win_data *data, t_components *cpts)
 {
 	while (data->run)
 	{
+		fetch(cpts);
+		decode(cpts);
 		event(data);
 		render(data);
 		update(data);

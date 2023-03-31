@@ -1,7 +1,11 @@
 #include <window.h>
+#include <components.h>
 #include <string.h>
+#include <stdio.h>
+#include <sys/stat.h>
+#include <tasks.h>
 
-int	get_scale(int argc, char **argv)
+int	get_scale(const int argc, char **argv)
 {
 	int	i;
 	int	scale;
@@ -21,17 +25,30 @@ int	get_scale(int argc, char **argv)
 
 int	main(int argc, char **argv)
 {
-	t_win_data	*data;
-	int			scale;
+	t_win_data		*data;
+	t_components	*cpts;
+	int				scale;
+	FILE			*rom;
+	struct stat		rom_stat;
 
+	rom = fopen("roms/IBMlogo.ch8", "rb");
+	stat("roms/IBMlogo.ch8", &rom_stat);
 	scale = get_scale(argc, argv);
-	if (SDL_Init(SDL_INIT_EVERYTHING))
+	cpts = init_components();
+	fread(cpts->ram + START_ADDRESS, rom_stat.st_size, 1, rom);
+	if (!cpts)
 		return (1);
+	if (SDL_Init(SDL_INIT_EVERYTHING))
+		return (free(cpts), 1);
 	data = init_window(scale);
 	if (!data)
-		return (SDL_Quit(), 1);
-	loop(data);
+		return (free(cpts), SDL_Quit(), 1);
+	for (int i = START_ADDRESS; i < TOTAL_RAM; i++)
+		printf("%X ", cpts->ram[i]);
+	loop(data, cpts);
+	free(cpts);
 	destroy_window(data);
 	SDL_Quit();
+	fclose(rom);
 	return (0);
 }

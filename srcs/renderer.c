@@ -6,6 +6,9 @@ void	event(t_win_data *data)
 	{
 		if (data->event.type == SDL_QUIT)
 			data->run = SDL_FALSE;
+		if (data->event.type == SDL_KEYDOWN)
+			if (data->event.key.keysym.sym == SDLK_ESCAPE)
+				data->run = SDL_FALSE;
 	}
 }
 
