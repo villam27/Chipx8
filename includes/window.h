@@ -18,6 +18,7 @@ typedef struct s_win_data
 	SDL_Renderer	*renderer;
 	SDL_Event		event;
 	SDL_bool		run;
+	int				scale;
 }	t_win_data;
 
 t_win_data	*init_window(const int scale);

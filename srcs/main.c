@@ -41,10 +41,16 @@ int	main(int argc, char **argv)
 	if (SDL_Init(SDL_INIT_EVERYTHING))
 		return (free(cpts), 1);
 	data = init_window(scale);
+	data->scale = scale;
 	if (!data)
 		return (free(cpts), SDL_Quit(), 1);
-	for (int i = START_ADDRESS; i < TOTAL_RAM; i++)
-		printf("%X ", cpts->ram[i]);
+	for (int i = START_ADDRESS; i < TOTAL_RAM; i += 2)
+	{
+		if ((cpts->ram[i] != 0 || cpts->ram[i + 1] != 0))
+			printf("(%i)|\x1b[31m%X %X\x1b[0m|", i, cpts->ram[i], cpts->ram[i + 1]);
+		//else
+		//	printf("|%X %X|", cpts->ram[i], cpts->ram[i + 1]);
+	}
 	loop(data, cpts);
 	free(cpts);
 	destroy_window(data);

@@ -26,7 +26,7 @@ void	loop(t_win_data *data, t_components *cpts)
 		fetch(cpts);
 		decode(cpts);
 		event(data);
-		render(data);
+		render(data, cpts);
 		update(data);
 	}
 }

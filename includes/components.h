@@ -16,6 +16,8 @@
 #define JUMP 0x1000
 #define DISPLAY 0xD000
 #define ANNN 0xA000
+#define SET_VREG 0x6000
+#define ADD_VREG 0x7000
 
 #define WIDTH 64
 #define HEIGHT 32

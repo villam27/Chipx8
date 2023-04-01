@@ -24,7 +24,7 @@ all	:	$(NAME)
 $(NAME)	:	$(OBJS)
 	$(CC) -o $(NAME) $(CFLAGS) $(OBJS) $(SDLFLAGS)
 
-$(BUILDDIR)/%.o	:	%.c $(HEADERS) Makefile
+$(BUILDDIR)/%.o	:	%.c $(HEADERS)/*.h Makefile
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -I$(HEADERS) -c $< -o $@
 
