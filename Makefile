@@ -5,6 +5,10 @@ SRCS		=	srcs/main.c \
 				srcs/renderer.c \
 				srcs/components.c \
 				srcs/tasks.c \
+				srcs/init.c \
+				srcs/rom.c \
+				srcs/debug.c \
+				srcs/operations.c \
 				srcs/window.c
 
 HEADERS		=	includes

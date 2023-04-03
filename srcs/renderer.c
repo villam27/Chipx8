@@ -15,9 +15,9 @@ void	event(t_win_data *data)
 void	draw_lines(t_win_data *data)
 {
 	SDL_SetRenderDrawColor(data->renderer, 100, 100, 100, 255);
-	for(int i = 0; i < HEIGHT; i++)
+	for(int i = 0; i <= HEIGHT; i++)
 		SDL_RenderDrawLine(data->renderer, 0, data->scale * i, WIDTH * data->scale, data->scale * i);
-	for(int i = 0; i < WIDTH; i++)
+	for(int i = 0; i <= WIDTH; i++)
 		SDL_RenderDrawLine(data->renderer, data->scale * i, 0, data->scale * i, HEIGHT * data->scale);
 	SDL_SetRenderDrawColor(data->renderer, 0, 0, 0, 255);
 }
@@ -30,7 +30,7 @@ void	render(t_win_data *data, t_components *cpts)
 	rect.y = 0;
 	rect.w = data->scale;
 	rect.h = data->scale;
-	//draw_lines(data);
+	draw_lines(data);
 	for (int i = 0; i < HEIGHT; i++)
 	{
 		rect.y = i * data->scale;

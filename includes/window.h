@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <tasks.h>
-#include <SDL2/SDL.h>
+#include <main.h>
 #define WIDTH 64
 #define HEIGHT 32
 #define DEFAULT_SCALE 5
@@ -12,17 +12,8 @@
 #define	TITLE "Chipx8"
 #define CENTERED SDL_WINDOWPOS_CENTERED
 
-typedef struct s_win_data
-{
-	SDL_Window		*window;
-	SDL_Renderer	*renderer;
-	SDL_Event		event;
-	SDL_bool		run;
-	int				scale;
-}	t_win_data;
-
 t_win_data	*init_window(const int scale);
-void		loop(t_win_data *data, t_components *cpts);
+void		loop(t_main *main);
 void		destroy_window(t_win_data	*data);
 
 #endif //WINDOW_H
