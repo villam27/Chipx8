@@ -55,7 +55,7 @@ t_main	*load_main(const int argc, char **argv)
 	get_args(argc, argv, &main_data->args);
 	main_data->window = init_window(main_data->args.scale);
 	if (!main_data->window)
-		return (SDL_Quit(), NULL);
+		return (destroy_main(main_data), NULL);
 	return (main_data);
 }
 

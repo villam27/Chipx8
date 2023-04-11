@@ -11,13 +11,19 @@ t_op_status	op_clear(t_components *cpts)
 
 t_op_status	op_return(t_components *cpts)
 {
-	(void)cpts;
+	int			i;
+
+	i = 0;
+	while (i < TOTAL_STACK && cpts->stack[i + 1] != 0)
+		i++;
+	cpts->op_code = cpts->stack[i];
+	cpts->stack[i] = 0;
 	return (OP_SUCCESS);
 }
 
 t_op_status	op_jump_to(t_components *cpts)
 {
-	(void)cpts;
+	cpts->pc = (u_int16_t)(GET_ADDRESS(cpts->op_code) + cpts->vreg[0]);
 	return (OP_SUCCESS);
 }
 
@@ -30,7 +36,17 @@ t_op_status	op_jump(t_components *cpts)
 
 t_op_status	op_call(t_components *cpts)
 {
-	(void)cpts;
+	int			i;
+	uint16_t	op_code;
+
+	i = 0;
+	op_code = cpts->op_code;
+	while (i < TOTAL_STACK && cpts->stack[i] != 0)
+		i++;
+	if (i == TOTAL_STACK)
+		return (OP_FAIL);
+	cpts->stack[i] = op_code;
+	cpts->op_code = GET_ADDRESS(op_code);
 	return (OP_SUCCESS);
 }
 
@@ -85,27 +101,71 @@ t_op_status	op_load(t_components *cpts)
 	return (OP_SUCCESS);
 }
 
+/*
+	Skip if VX and NN are not equal
+*/
 t_op_status	op_equal(t_components *cpts)
 {
-	(void)cpts;
+	uint16_t	x;
+	uint16_t	NN;
+	uint16_t	op_code;
+
+	op_code = cpts->op_code;
+	x = GET_VX(op_code);
+	NN = GET_NN(op_code);
+	if (x != NN)
+		NEXT_OP(cpts->op_code);
 	return (OP_SUCCESS);
 }
 
+/*
+	Skip if VX and NN are equal
+*/
 t_op_status	op_no_equal(t_components *cpts)
 {
-	(void)cpts;
+	uint16_t	x;
+	uint16_t	NN;
+	uint16_t	op_code;
+
+	op_code = cpts->op_code;
+	x = GET_VX(op_code);
+	NN = GET_NN(op_code);
+	if (x == NN)
+		NEXT_OP(cpts->op_code);
 	return (OP_SUCCESS);
 }
 
+/*
+	Skip if VX and VY are not equal
+*/
 t_op_status	op_reg_equal(t_components *cpts)
 {
-	(void)cpts;
+	uint16_t	x;
+	uint16_t	y;
+	uint16_t	op_code;
+
+	op_code = cpts->op_code;
+	x = GET_VX(op_code);
+	y = GET_VY(op_code);
+	if (x != y)
+		NEXT_OP(cpts->op_code);
 	return (OP_SUCCESS);
 }
 
+/*
+	Skip if VX and VY are equal
+*/
 t_op_status	op_reg_no_equal(t_components *cpts)
 {
-	(void)cpts;
+	uint16_t	x;
+	uint16_t	y;
+	uint16_t	op_code;
+
+	op_code = cpts->op_code;
+	x = GET_VX(op_code);
+	y = GET_VY(op_code);
+	if (x == y)
+		NEXT_OP(cpts->op_code);
 	return (OP_SUCCESS);
 }
 
@@ -143,31 +203,66 @@ t_op_status	op_add(t_components *cpts)
 
 t_op_status	op_assign_reg(t_components *cpts)
 {
-	(void)cpts;
+	u_int16_t	op_code;
+	u_int8_t	vx;
+	u_int8_t	vy;
+
+	op_code = cpts->op_code;
+	vx = GET_VX(op_code);
+	vy = GET_VY(op_code);
+	cpts->vreg[vx] = cpts->vreg[vy];
 	return (OP_SUCCESS);
 }
 
 t_op_status	op_add_reg(t_components *cpts)
 {
-	(void)cpts;
+	u_int16_t	op_code;
+	u_int8_t	vx;
+	u_int8_t	vy;
+
+	op_code = cpts->op_code;
+	vx = GET_VX(op_code);
+	vy = GET_VY(op_code);
+	cpts->vreg[vx] += cpts->vreg[vy];
 	return (OP_SUCCESS);
 }
 
 t_op_status	op_left_sub_reg(t_components *cpts)
 {
-	(void)cpts;
+	u_int16_t	op_code;
+	u_int8_t	vx;
+	u_int8_t	vy;
+
+	op_code = cpts->op_code;
+	vx = GET_VX(op_code);
+	vy = GET_VY(op_code);
+	cpts->vreg[vx] -= cpts->vreg[vy];
 	return (OP_SUCCESS);
 }
 
 t_op_status	op_right_sub_reg(t_components *cpts)
 {
-	(void)cpts;
+	u_int16_t	op_code;
+	u_int8_t	vx;
+	u_int8_t	vy;
+
+	op_code = cpts->op_code;
+	vx = GET_VX(op_code);
+	vy = GET_VY(op_code);
+	cpts->vreg[vx] = (cpts->vreg[vy] - cpts->vreg[vx]);
 	return (OP_SUCCESS);
 }
 
 t_op_status	op_rand_reg(t_components *cpts)
 {
-	(void)cpts;
+	u_int16_t	op_code;
+	u_int8_t	vx;
+	u_int8_t	NN;
+
+	op_code = cpts->op_code;
+	vx = GET_VX(op_code);
+	NN = GET_NN(op_code);
+	cpts->vreg[vx] = ((rand() % NN) & NN);
 	return (OP_SUCCESS);
 }
 
@@ -216,30 +311,63 @@ t_op_status	op_add_index(t_components *cpts)
 
 t_op_status	op_bitwise_or(t_components *cpts)
 {
-	(void)cpts;
+	u_int16_t	op_code;
+	u_int8_t	vx;
+	u_int8_t	vy;
+
+	op_code = cpts->op_code;
+	vx = GET_VX(op_code);
+	vy = GET_VY(op_code);
+	cpts->vreg[vx] = (cpts->vreg[vx] | cpts->vreg[vy]);
 	return (OP_SUCCESS);
 }
 
 t_op_status	op_bitwise_and(t_components *cpts)
 {
-	(void)cpts;
+	u_int16_t	op_code;
+	u_int8_t	vx;
+	u_int8_t	vy;
+
+	op_code = cpts->op_code;
+	vx = GET_VX(op_code);
+	vy = GET_VY(op_code);
+	cpts->vreg[vx] = (cpts->vreg[vx] & cpts->vreg[vy]);
 	return (OP_SUCCESS);
 }
 
 t_op_status	op_bitwise_xor(t_components *cpts)
-{
-	(void)cpts;
+{	
+	u_int16_t	op_code;
+	u_int8_t	vx;
+	u_int8_t	vy;
+
+	op_code = cpts->op_code;
+	vx = GET_VX(op_code);
+	vy = GET_VY(op_code);
+	cpts->vreg[vx] = (cpts->vreg[vx] ^ cpts->vreg[vy]);
 	return (OP_SUCCESS);
 }
 
 t_op_status	op_bitwise_rshift(t_components *cpts)
 {
-	(void)cpts;
+	u_int16_t	op_code;
+	u_int8_t	vx;
+
+	op_code = cpts->op_code;
+	vx = GET_VX(op_code);
+	cpts->vreg[VF] = (cpts->vreg[vx] & 0x1);
+	cpts->vreg[vx] = (cpts->vreg[vx] >> 0x0001);
 	return (OP_SUCCESS);
 }
 
 t_op_status	op_bitwise_lshift(t_components *cpts)
 {
-	(void)cpts;
+	u_int16_t	op_code;
+	u_int8_t	vx;
+
+	op_code = cpts->op_code;
+	vx = GET_VX(op_code);
+	cpts->vreg[VF] = (cpts->vreg[vx] & 0x80);
+	cpts->vreg[vx] = (cpts->vreg[vx] << 1);
 	return (OP_SUCCESS);
 }

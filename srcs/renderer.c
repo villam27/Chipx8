@@ -30,7 +30,7 @@ void	render(t_win_data *data, t_components *cpts)
 	rect.y = 0;
 	rect.w = data->scale;
 	rect.h = data->scale;
-	draw_lines(data);
+	//draw_lines(data);
 	for (int i = 0; i < HEIGHT; i++)
 	{
 		rect.y = i * data->scale;

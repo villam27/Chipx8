@@ -12,6 +12,8 @@
 #define GET_FUNC(CODE)		((CODE) & 0x000F)
 #define GET_FUNC2(CODE)		((CODE) & 0x00FF)
 
+#define NEXT_OP(CODE)		((CODE) += 2)
+
 #define VF					0xF
 
 #define START_ADDRESS		0x0200
