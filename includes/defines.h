@@ -25,6 +25,8 @@
 #define MASK_THREE			0x00F0
 #define MASK_FOUR			0x000F
 
+#define	MAX_OPERATIONS		35
+
 #define WIDTH				64
 #define HEIGHT				32
 
