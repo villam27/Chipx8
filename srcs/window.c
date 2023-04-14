@@ -31,6 +31,7 @@ void	loop(t_main *main_data)
 	{
 		fetch(cpts);
 		decode(cpts);
+		execute(cpts);
 		event(window);
 		render(window, cpts);
 		update(window);

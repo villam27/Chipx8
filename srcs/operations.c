@@ -371,3 +371,33 @@ t_op_status	op_bitwise_lshift(t_components *cpts)
 	cpts->vreg[vx] = (cpts->vreg[vx] << 1);
 	return (OP_SUCCESS);
 }
+
+t_op_status	op_operation_0(t_components *cpts)
+{	
+	u_int8_t	function;
+	
+	function = GET_FUNC2(cpts->op_code);
+	if (function == CLEAR_FUNC)
+		return (op_clear(cpts));
+	else if (function == RETURN_FUNC)
+		return (op_return(cpts));
+	return (OP_FAIL);
+}
+
+t_op_status	op_operation_8(t_components *cpts)
+{
+	(void)cpts;
+	return (OP_SUCCESS);
+}
+
+t_op_status	op_operation_E(t_components *cpts)
+{
+	(void)cpts;
+	return (OP_SUCCESS);
+}
+
+t_op_status	op_operation_F(t_components *cpts)
+{
+	(void)cpts;
+	return (OP_SUCCESS);
+}

@@ -47,4 +47,9 @@ t_op_status	op_bitwise_xor(t_components *cpts);
 t_op_status	op_bitwise_rshift(t_components *cpts);
 t_op_status	op_bitwise_lshift(t_components *cpts);
 
+t_op_status	op_operation_0(t_components *cpts);
+t_op_status	op_operation_8(t_components *cpts);
+t_op_status	op_operation_E(t_components *cpts);
+t_op_status	op_operation_F(t_components *cpts);
+
 #endif

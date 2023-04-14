@@ -12,6 +12,9 @@
 #define GET_FUNC(CODE)		((CODE) & 0x000F)
 #define GET_FUNC2(CODE)		((CODE) & 0x00FF)
 
+#define CLEAR_FUNC			0xE0
+#define RETURN_FUNC			0xEE
+
 #define NEXT_OP(CODE)		((CODE) += 2)
 
 #define VF					0xF
@@ -25,7 +28,7 @@
 #define MASK_THREE			0x00F0
 #define MASK_FOUR			0x000F
 
-#define	MAX_OPERATIONS		35
+#define	MAX_OPERATIONS		16
 
 #define WIDTH				64
 #define HEIGHT				32

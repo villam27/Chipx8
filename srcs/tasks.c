@@ -3,70 +3,44 @@
 #include <stdlib.h>
 #include <operations.h>
 
-char	*op_str[MAX_OPERATIONS] = 
+u_int16_t	op_id[MAX_OPERATIONS] = 
 {
-	"0000",
-	"1000",
-	"2000",
-	"3000",
-	"4000",
-	"5000",
-	"6000",
-	"7000",
-	"8000",
-	"9000",
-	"A000",
-	"B000",
-	"C000",
-	"D000",
-	"E000",
-	"F000"
+	0x0000,
+	0x1000,
+	0x2000,
+	0x3000,
+	0x4000,
+	0x5000,
+	0x6000,
+	0x7000,
+	0x8000,
+	0x9000,
+	0xA000,
+	0xB000,
+	0xC000,
+	0xD000,
+	0xE000,
+	0xF000
 };
 
 t_op_status	(*operations[MAX_OPERATIONS])(t_components *cpts) =
 {
-	//	0 => op
-	/*op_clear,
-	op_return,*/
-	op_call,
+	op_operation_0,
 	op_jump,
+	op_call,
 	op_no_equal,
 	op_equal,
 	op_reg_no_equal,
 	op_assign,
 	op_add,
-
-	// 8 => op
-	/*op_assign_reg,
-	op_bitwise_or,
-	op_bitwise_and,
-	op_bitwise_xor,
-	op_add_reg,
-	op_left_sub_reg,
-	op_bitwise_rshift,
-	op_right_sub_reg,
-	op_bitwise_lshift*/
-
+	op_operation_8,
 	op_reg_equal,
 	op_assign_index,
 	op_jump_to,
 	op_rand_reg,
 	op_display,
-
-	// E => op
-	/*op_no_key_press,
-	op_key_press,*/
-
-	// F => op
-	/*op_assign_delay,
-	op_wait_key,
-	op_assign_delay_reg,
-	op_assign_buzzer,
-	op_add_index,
-	op_set_index,
-	op_bcd,
-	op_save,
-	op_load,*/
+	op_operation_E,
+	op_operation_F
 };
 
 void	fetch(t_components *cpts)
@@ -82,13 +56,20 @@ void	fetch(t_components *cpts)
 
 void	decode(t_components *cpts)
 {
-	(void)cpts;
-	/*size_t	i;
+	size_t		id;
+	uint16_t	op_code;
+	uint16_t	op;
 
-	while (i < MAX_OPERATIONS)
+	op_code = cpts->op_code;
+	op = GET_OP(op_code);
+	id = 0;
+	while (id < MAX_OPERATIONS)
 	{
-		code
-	}*/
+		if (op == op_id[id])
+			break;
+		id++;
+	}
+	operations[id](cpts);
 }
 
 void	execute(t_components *cpts)
