@@ -29,6 +29,7 @@
 #define MASK_FOUR			0x000F
 
 #define	MAX_OPERATIONS		16
+#define CYCLES				8
 
 #define WIDTH				64
 #define HEIGHT				32

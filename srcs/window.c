@@ -14,7 +14,7 @@ t_win_data	*init_window(const int scale)
 				WIDTH * scale, HEIGHT * scale, SDL_WINDOW_MINIMIZED);
 	if (!data->window)
 		return (free(data), NULL);
-	data->renderer = SDL_CreateRenderer(data->window, -1, SDL_RENDERER_ACCELERATED);
+	data->renderer = SDL_CreateRenderer(data->window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	if (!data->renderer)
 		return (SDL_DestroyWindow(data->window), free(data), NULL);
 	return (data);
@@ -29,9 +29,12 @@ void	loop(t_main *main_data)
 	cpts = main_data->cpts;
 	while (window->run)
 	{
-		fetch(cpts);
-		decode(cpts);
-		execute(cpts);
+		for (int i = 0; i < CYCLES; i++)
+		{
+			fetch(cpts);
+			decode(cpts);
+			execute(cpts);
+		}
 		event(window);
 		render(window, cpts);
 		update(window);
