@@ -393,8 +393,42 @@ t_op_status	op_operation_0(t_components *cpts)
 
 t_op_status	op_operation_8(t_components *cpts)
 {
-	(void)cpts;
-	return (OP_SUCCESS);
+	u_int8_t	function;
+	
+	function = GET_FUNC2(cpts->op_code);
+	switch (function)
+	{
+		case ASSIGN_FUNC:
+			return (op_assign_reg(cpts));
+			break;
+		case OR_FUNC:
+			return (op_bitwise_or(cpts));
+			break;
+		case AND_FUNC:
+			return (op_bitwise_and(cpts));
+			break;
+		case XOR_FUNC:
+			return (op_bitwise_xor(cpts));
+			break;
+		case ADD_FUNC:
+			return (op_add_reg(cpts));
+			break;
+		case LSUBST_FUNC:
+			return (op_left_sub_reg(cpts));
+			break;
+		case LSHIFT_FUNC:
+			return (op_bitwise_lshift(cpts));
+			break;
+		case RSUBST_FUNC:
+			return (op_right_sub_reg(cpts));
+			break;
+		case RSHIFT_FUNC:
+			return (op_bitwise_rshift(cpts));
+			break;
+		default:
+			return (OP_FAIL);
+			break;
+	}
 }
 
 t_op_status	op_operation_E(t_components *cpts)
