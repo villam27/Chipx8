@@ -377,11 +377,18 @@ t_op_status	op_operation_0(t_components *cpts)
 	u_int8_t	function;
 	
 	function = GET_FUNC2(cpts->op_code);
-	if (function == CLEAR_FUNC)
-		return (op_clear(cpts));
-	else if (function == RETURN_FUNC)
-		return (op_return(cpts));
-	return (OP_FAIL);
+	switch (function)
+	{
+		case CLEAR_FUNC:
+			return (op_clear(cpts));
+			break;
+		case RETURN_FUNC:
+			return (op_return(cpts));
+			break;
+		default:
+			return (OP_FAIL);
+			break;
+	}
 }
 
 t_op_status	op_operation_8(t_components *cpts)
