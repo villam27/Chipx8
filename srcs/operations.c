@@ -267,6 +267,7 @@ t_op_status	op_rand_reg(t_components *cpts)
 	u_int8_t	NN;
 	u_int16_t	random;
 
+	random = 0;
 	op_code = cpts->op_code;
 	vx = GET_VX(op_code);
 	NN = GET_NN(op_code);

@@ -13,10 +13,10 @@ int	main(int argc, char **argv)
 {
 	t_main			*main_data;
 
-	initscr();
 	srand(time(NULL));
 	if (argc < 2)
 		return (1);
+	initscr();
 	main_data = load_main(argc, argv);
 	if (!main_data)
 		return (perror(argv[1]), 1);

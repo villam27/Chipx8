@@ -37,7 +37,7 @@ void	loop(t_main *main_data)
 			decode(cpts, debug_file);
 			execute(cpts);
 			event(window);
-			SDL_Delay(20);
+			SDL_Delay(0);
 		}
 		refresh();
 		render(window, cpts);

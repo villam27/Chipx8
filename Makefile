@@ -9,6 +9,7 @@ SRCS		=	srcs/main.c \
 				srcs/rom.c \
 				srcs/debug.c \
 				srcs/operations.c \
+				srcs/global.c \
 				srcs/window.c
 
 HEADERS		=	includes
