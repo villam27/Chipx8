@@ -2,6 +2,7 @@
 #define MAIN_H
 
 #include <SDL2/SDL.h>
+#include <ncurses.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <enum.h>

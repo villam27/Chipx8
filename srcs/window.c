@@ -24,7 +24,9 @@ void	loop(t_main *main_data)
 {	
 	t_win_data		*window;
 	t_components	*cpts;
+	FILE			*debug_file;
 
+	debug_file = fopen("opcode.log", "w+");
 	window = main_data->window;
 	cpts = main_data->cpts;
 	while (window->run)
@@ -32,13 +34,16 @@ void	loop(t_main *main_data)
 		for (int i = 0; i < CYCLES; i++)
 		{
 			fetch(cpts);
-			decode(cpts);
+			decode(cpts, debug_file);
 			execute(cpts);
+			event(window);
+			SDL_Delay(20);
 		}
-		event(window);
+		refresh();
 		render(window, cpts);
 		update(window);
 	}
+	fclose(debug_file);
 }
 
 void	destroy_window(t_win_data	*data)

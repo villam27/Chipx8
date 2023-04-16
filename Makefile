@@ -26,7 +26,7 @@ ECHO		=	echo -e
 all	:	$(NAME)
 
 $(NAME)	:	$(OBJS)
-	$(CC) -o $(NAME) $(CFLAGS) $(OBJS) $(SDLFLAGS)
+	$(CC) -o $(NAME) $(CFLAGS) $(OBJS) $(SDLFLAGS) -lncurses
 
 $(BUILDDIR)/%.o	:	%.c $(HEADERS)/*.h Makefile
 	@mkdir -p $(@D)

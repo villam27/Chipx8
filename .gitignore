@@ -1,4 +1,5 @@
 roms
+*.log
 .vscode
 
 # Prerequisites

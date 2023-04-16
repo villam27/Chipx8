@@ -2,12 +2,14 @@
 
 void	print_memory(t_components *cpts)
 {
+	start_color();
+	init_pair(1, COLOR_RED, COLOR_BLACK);
+	attron(COLOR_PAIR(1));
 	for (int i = 0; i < TOTAL_RAM; i += 2)
 	{
 		if ((cpts->ram[i] != 0 || cpts->ram[i + 1] != 0))
-			printf("\x1b[31m%X %X\x1b[0m|", cpts->ram[i], cpts->ram[i + 1]);
-		/*else
-			printf("0 0|");*/
+			printw("(%d)%X %X|", i, cpts->ram[i], cpts->ram[i + 1]);
 	}
-	printf("\n");
+	attroff(COLOR_PAIR(1));
+	refresh();
 }

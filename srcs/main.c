@@ -7,11 +7,13 @@
 #include <sys/stat.h>
 #include <tasks.h>
 #include <debug.h>
+#include <ncurses.h>
 
 int	main(int argc, char **argv)
 {
 	t_main			*main_data;
 
+	initscr();
 	srand(time(NULL));
 	if (argc < 2)
 		return (1);
@@ -21,5 +23,6 @@ int	main(int argc, char **argv)
 	print_memory(main_data->cpts);
 	loop(main_data);
 	destroy_main(main_data);
+	endwin();
 	return (0);
 }

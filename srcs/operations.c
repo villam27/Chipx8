@@ -18,6 +18,7 @@ t_op_status	op_return(t_components *cpts)
 		i++;
 	cpts->op_code = cpts->stack[i];
 	cpts->stack[i] = 0;
+	//NEXT_OP(cpts->pc);
 	return (OP_SUCCESS);
 }
 
@@ -114,7 +115,7 @@ t_op_status	op_equal(t_components *cpts)
 	x = GET_VX(op_code);
 	NN = GET_NN(op_code);
 	if (x != NN)
-		NEXT_OP(cpts->op_code);
+		NEXT_OP(cpts->pc);
 	return (OP_SUCCESS);
 }
 
@@ -131,7 +132,7 @@ t_op_status	op_no_equal(t_components *cpts)
 	x = GET_VX(op_code);
 	NN = GET_NN(op_code);
 	if (x == NN)
-		NEXT_OP(cpts->op_code);
+		NEXT_OP(cpts->pc);
 	return (OP_SUCCESS);
 }
 
