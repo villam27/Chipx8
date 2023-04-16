@@ -265,11 +265,14 @@ t_op_status	op_rand_reg(t_components *cpts)
 	u_int16_t	op_code;
 	u_int8_t	vx;
 	u_int8_t	NN;
+	u_int16_t	random;
 
 	op_code = cpts->op_code;
 	vx = GET_VX(op_code);
 	NN = GET_NN(op_code);
-	cpts->vreg[vx] = ((rand() % NN) & NN);
+	random = rand() % 255;
+	mvprintw(28, 1, "Rand: %d", random);
+	cpts->vreg[vx] = (random & NN);
 	return (OP_SUCCESS);
 }
 
