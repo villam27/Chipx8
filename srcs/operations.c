@@ -133,6 +133,7 @@ t_op_status	op_no_equal(t_components *cpts)
 	x = GET_VX(op_code);
 	x = cpts->vreg[x];
 	NN = GET_NN(op_code);
+	(void)NN;
 	if (x == NN)
 		NEXT_OP(cpts->pc);
 	return (OP_SUCCESS);
@@ -272,7 +273,6 @@ t_op_status	op_rand_reg(t_components *cpts)
 	vx = GET_VX(op_code);
 	NN = GET_NN(op_code);
 	random = rand() % 255;
-	mvprintw(28, 1, "Rand: %d", random);
 	cpts->vreg[vx] = (random & NN);
 	return (OP_SUCCESS);
 }

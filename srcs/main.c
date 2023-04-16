@@ -20,7 +20,6 @@ int	main(int argc, char **argv)
 	main_data = load_main(argc, argv);
 	if (!main_data)
 		return (perror(argv[1]), 1);
-	print_memory(main_data->cpts);
 	loop(main_data);
 	destroy_main(main_data);
 	endwin();

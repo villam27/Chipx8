@@ -19,5 +19,6 @@ t_components	*init_components(void)
 	for (int i = 0; i < HEIGHT; i++)
 		for (int j = 0; j < WIDTH; j++)
 			cpts->diplay[i][j] = BLACK;
+	cpts->id = 0;
 	return (cpts);
 }

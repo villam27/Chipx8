@@ -1,4 +1,5 @@
 #include <debug.h>
+#include <global.h>
 
 void	print_memory(t_components *cpts)
 {
@@ -12,4 +13,22 @@ void	print_memory(t_components *cpts)
 	}
 	attroff(COLOR_PAIR(1));
 	refresh();
+}
+
+void	print_last_op(t_components *cpts, int x, int y, int max)
+{
+	uint16_t	op_code;
+	static int	col = 0;
+
+	op_code = cpts->op_code;
+	mvprintw(col + y, x, "Current op: %X => %s", op_code, op_str[cpts->id]);
+	col++;
+	if (col >= max)
+		col = 0;
+}
+
+void	print_registers(t_components *cpts, int x, int y)
+{
+	for (int i = 0; i <= VF; i++)
+		mvprintw(i + y, x, "register [%d]:[%d]", i, cpts->vreg[i]);
 }

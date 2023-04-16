@@ -43,6 +43,7 @@ typedef struct s_components
 	u_int16_t	op_code;
 	u_int16_t	index_reg;
 	t_display	diplay[HEIGHT][WIDTH];
+	size_t		id;
 }	t_components;
 
 typedef struct s_rom_data
