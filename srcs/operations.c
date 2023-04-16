@@ -113,6 +113,7 @@ t_op_status	op_equal(t_components *cpts)
 
 	op_code = cpts->op_code;
 	x = GET_VX(op_code);
+	x = cpts->vreg[x];
 	NN = GET_NN(op_code);
 	if (x != NN)
 		NEXT_OP(cpts->pc);
@@ -130,6 +131,7 @@ t_op_status	op_no_equal(t_components *cpts)
 
 	op_code = cpts->op_code;
 	x = GET_VX(op_code);
+	x = cpts->vreg[x];
 	NN = GET_NN(op_code);
 	if (x == NN)
 		NEXT_OP(cpts->pc);
@@ -148,6 +150,8 @@ t_op_status	op_reg_equal(t_components *cpts)
 	op_code = cpts->op_code;
 	x = GET_VX(op_code);
 	y = GET_VY(op_code);
+	x = cpts->vreg[x];
+	y = cpts->vreg[y];
 	if (x != y)
 		NEXT_OP(cpts->op_code);
 	return (OP_SUCCESS);
@@ -165,6 +169,8 @@ t_op_status	op_reg_no_equal(t_components *cpts)
 	op_code = cpts->op_code;
 	x = GET_VX(op_code);
 	y = GET_VY(op_code);
+	x = cpts->vreg[x];
+	y = cpts->vreg[y];
 	if (x == y)
 		NEXT_OP(cpts->op_code);
 	return (OP_SUCCESS);

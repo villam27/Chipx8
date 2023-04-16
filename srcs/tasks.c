@@ -100,6 +100,7 @@ void	decode(t_components *cpts, FILE *debug_file)
 	uint16_t	op_code;
 	uint16_t	op;
 	static int	col = 3;
+	static int	line = 0;
 
 	op_code = cpts->op_code;
 	op = GET_OP(op_code);
@@ -117,7 +118,9 @@ void	decode(t_components *cpts, FILE *debug_file)
 	if (col > 25)
 		col = 3;
 	(void)debug_file;
-	//fprintf(debug_file, "Current op: (%d) %X => %s: %s\n", cpts->pc - 2, op_code, op_str[id], op_comment[id]);
+	if (line < 500)
+		fprintf(debug_file, "Current op: (%d) %X => %s: %s\n", cpts->pc - 2, op_code, op_str[id], op_comment[id]);
+	line++;
 	operations[id](cpts);
 }
 
