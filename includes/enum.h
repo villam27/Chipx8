@@ -7,4 +7,10 @@ typedef enum e_display
 	WHITE
 }	t_display;
 
+typedef enum e_key
+{
+	NOT_PRESSED,
+	PRESSED
+}	t_key;
+
 #endif //ENUM_H

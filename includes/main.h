@@ -43,6 +43,7 @@ typedef struct s_components
 	u_int16_t	op_code;
 	u_int16_t	index_reg;
 	t_display	diplay[HEIGHT][WIDTH];
+	t_key		keypad[MAX_KEYS];
 	size_t		id;
 }	t_components;
 

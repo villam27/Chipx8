@@ -12,6 +12,8 @@ t_components	*init_components(void)
 	memset(cpts->ram, 0, TOTAL_RAM);
 	memset(cpts->stack, 0, TOTAL_STACK * sizeof(u_int16_t));
 	memset(cpts->vreg, 0, 16);
+	memset(cpts->keypad, 0, sizeof(t_key) * MAX_KEYS);
+	SDL_GetKey
 	cpts->delay_timer = 0;
 	cpts->sound_timer = 0;
 	cpts->pc = START_ADDRESS;
