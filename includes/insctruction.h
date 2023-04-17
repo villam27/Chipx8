@@ -53,4 +53,33 @@
 #define BITWISE_RSHIFT		0x8006
 #define BITWISE_LSHIT		0x800E
 
+/*
+	Func
+*/
+#define CLEAR_FUNC			0xE0
+#define RETURN_FUNC			0xEE
+
+#define ASSIGN_FUNC			0x0
+#define OR_FUNC				0x1
+#define AND_FUNC			0x2
+#define XOR_FUNC			0x3
+#define ADD_FUNC			0x4
+#define LSUBST_FUNC			0x5
+#define LSHIFT_FUNC			0x6
+#define RSUBST_FUNC			0x7
+#define RSHIFT_FUNC			0xE
+
+#define NKEY_PRESS_FUNC		0xE
+#define KEY_PRESS_FUNC		0x1
+
+#define ASSSIGN_DELAY_FUNC	0x07
+#define WAIT_KEY_FUNC		0x0A
+#define DELAY_ASSIGN_FUNC	0x15
+#define BUZZER_ASSIGN_FUNC	0x18
+#define ADD_ID_REG_FUNC		0x1E
+#define SET_HEX_FUNC		0x29
+#define BCD_FUNC			0x33
+#define	SAVE_FUNC			0x55
+#define LOAD_FUNC			0x65
+
 #endif //INSTRUCTION_H

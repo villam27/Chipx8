@@ -1,4 +1,6 @@
 #include <main.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 static t_rom_data	*init_rom(void)
 {
@@ -16,6 +18,8 @@ t_rom_data	*load_rom(const char *file)
 {
 	t_rom_data	*rom;
 
+	if (access(file, W_OK) != 0)
+		return (NULL);
 	rom = init_rom();
 	if (!rom)
 		return (NULL);

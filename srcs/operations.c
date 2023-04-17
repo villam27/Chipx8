@@ -67,7 +67,7 @@ t_op_status	op_display(t_components *cpts)
 	for (int i = 0; i < len; i++)
 	{
 		px = cpts->ram[cpts->index_reg + i];
-		for (int j = 0; j < 8; j++)
+		for (int j = 0; j < SPRITE_SIZE; j++)
 		{
 			if (y + i < HEIGHT && x + j < WIDTH && (px & (0x80 >> j)))
 			{
@@ -387,7 +387,7 @@ t_op_status	op_operation_0(t_components *cpts)
 {	
 	u_int8_t	function;
 	
-	function = GET_FUNC2(cpts->op_code);
+	function = GET_FUNC(cpts->op_code);
 	switch (function)
 	{
 		case CLEAR_FUNC:
@@ -406,7 +406,7 @@ t_op_status	op_operation_8(t_components *cpts)
 {
 	u_int8_t	function;
 	
-	function = GET_FUNC2(cpts->op_code);
+	function = GET_FUNC(cpts->op_code);
 	switch (function)
 	{
 		case ASSIGN_FUNC:
@@ -443,13 +443,61 @@ t_op_status	op_operation_8(t_components *cpts)
 }
 
 t_op_status	op_operation_E(t_components *cpts)
-{
-	(void)cpts;
-	return (OP_SUCCESS);
+{	
+	u_int8_t	function;
+	
+	function = GET_FUNC(cpts->op_code);
+	switch (function)
+	{
+		case NKEY_PRESS_FUNC:
+			return (op_no_key_press(cpts));
+			break;
+		case KEY_PRESS_FUNC:
+			return (op_key_press(cpts));
+			break;
+		default:
+			return (OP_FAIL);
+			break;
+	}
 }
 
 t_op_status	op_operation_F(t_components *cpts)
-{
-	(void)cpts;
+{	
+	u_int8_t	function;
+	
+	function = GET_FUNC2(cpts->op_code);
+	switch (function)
+	{
+		case ASSSIGN_DELAY_FUNC:
+			return (op_assign_delay(cpts));
+			break;
+		case WAIT_KEY_FUNC:
+			return (op_wait_key(cpts));
+			break;
+		case DELAY_ASSIGN_FUNC:
+			return (op_assign_delay_reg(cpts));
+			break;
+		case BUZZER_ASSIGN_FUNC:
+			return (op_assign_buzzer(cpts));
+			break;
+		case ADD_ID_REG_FUNC:
+			return (op_add_index(cpts));
+			break;
+		case SET_HEX_FUNC:
+			return (op_set_index(cpts));
+			break;
+		case BCD_FUNC:
+			return (op_bcd(cpts));
+			break;
+		case SAVE_FUNC:
+			return (op_save(cpts));
+			break;
+		case LOAD_FUNC:
+			return (op_load(cpts));
+			break;
+		default:
+			return (OP_FAIL);
+			break;
+	}
 	return (OP_SUCCESS);
 }

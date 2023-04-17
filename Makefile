@@ -17,7 +17,7 @@ HEADERS		=	includes
 BUILDDIR	=	.build
 OBJS		=	$(SRCS:%.c=$(BUILDDIR)/%.o)
 CC			=	gcc
-CFLAGS		=	-Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS		=	-Wall -Wextra -Werror# -g -fsanitize=address
 SDLFLAGS	=	`sdl2-config --cflags --libs`
 RM			=	rm -Rf
 MAKE		=	make -C
