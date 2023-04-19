@@ -5,6 +5,6 @@
 
 void	fetch(t_components *cpts);
 void	decode(t_components *cpts, FILE *debug_file);
-void	execute(t_components *cpts);
+void	execute(t_components *cpts, FILE *debug_file);
 
 #endif //TASK_H

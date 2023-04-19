@@ -15,10 +15,10 @@ t_op_status	op_return(t_components *cpts)
 	int			i;
 
 	i = 0;
-	while (i < TOTAL_STACK && cpts->stack[i + 1] != 0)
+	while (i < TOTAL_STACK && cpts->stack[i] != 0)
 		i++;
-	cpts->op_code = cpts->stack[i];
-	cpts->stack[i] = 0;
+	cpts->pc = cpts->stack[i - 1];
+	cpts->stack[i - 1] = 0;
 	//NEXT_OP(cpts->pc);
 	return (OP_SUCCESS);
 }
@@ -47,8 +47,8 @@ t_op_status	op_call(t_components *cpts)
 		i++;
 	if (i == TOTAL_STACK)
 		return (OP_FAIL);
-	cpts->stack[i] = op_code;
-	cpts->op_code = GET_ADDRESS(op_code);
+	cpts->stack[i] = cpts->pc;
+	cpts->pc = GET_ADDRESS(op_code);
 	return (OP_SUCCESS);
 }
 
@@ -87,19 +87,49 @@ t_op_status	op_display(t_components *cpts)
 
 t_op_status	op_bcd(t_components *cpts)
 {
+	/*uint8_t		vx;
+	uint16_t	op_code;
+
+	op_code = cpts->op_code;
+	vx = GET_VX(op_code);
+	vx = cpts->vreg[vx];*/
 	(void)cpts;
 	return (OP_SUCCESS);
 }
 
 t_op_status	op_save(t_components *cpts)
 {
-	(void)cpts;
+	uint8_t		vx;
+	uint16_t	op_code;
+	uint16_t	I;
+
+	op_code = cpts->op_code;
+	vx = GET_VX(op_code);
+	I = cpts->index_reg;
+	for (size_t i = 0; i <= vx; i++)
+	{
+		if (I + i >= TOTAL_RAM)
+			return (OP_FAIL);
+		cpts->ram[I + i] = cpts->vreg[i];
+	}
 	return (OP_SUCCESS);
 }
 
 t_op_status	op_load(t_components *cpts)
 {
-	(void)cpts;
+	uint8_t		vx;
+	uint16_t	op_code;
+	uint16_t	I;
+
+	op_code = cpts->op_code;
+	vx = GET_VX(op_code);
+	I = cpts->index_reg;
+	for (size_t i = 0; i <= vx; i++)
+	{
+		if (I + i >= TOTAL_RAM)
+			return (OP_FAIL);
+		cpts->vreg[i] = cpts->ram[I + i]; 
+	}
 	return (OP_SUCCESS);
 }
 
@@ -134,7 +164,6 @@ t_op_status	op_no_equal(t_components *cpts)
 	x = GET_VX(op_code);
 	x = cpts->vreg[x];
 	NN = GET_NN(op_code);
-	(void)NN;
 	if (x == NN)
 		NEXT_OP(cpts->pc);
 	return (OP_SUCCESS);
@@ -155,7 +184,7 @@ t_op_status	op_reg_equal(t_components *cpts)
 	x = cpts->vreg[x];
 	y = cpts->vreg[y];
 	if (x != y)
-		NEXT_OP(cpts->op_code);
+		NEXT_OP(cpts->pc);
 	return (OP_SUCCESS);
 }
 
@@ -174,7 +203,7 @@ t_op_status	op_reg_no_equal(t_components *cpts)
 	x = cpts->vreg[x];
 	y = cpts->vreg[y];
 	if (x == y)
-		NEXT_OP(cpts->op_code);
+		NEXT_OP(cpts->pc);
 	return (OP_SUCCESS);
 }
 
@@ -186,7 +215,10 @@ t_op_status	op_key_press(t_components *cpts)
 	op_code = cpts->op_code;
 	x = GET_VX(op_code);
 	if (!cpts->key_state[keys[x]])
-		NEXT_OP(cpts->op_code);
+	{
+		mvprintw(0, 80, "press [%X]", x);
+		NEXT_OP(cpts->pc);
+	}
 	return (OP_SUCCESS);
 }
 
@@ -198,7 +230,10 @@ t_op_status	op_no_key_press(t_components *cpts)
 	op_code = cpts->op_code;
 	x = GET_VX(op_code);
 	if (cpts->key_state[keys[x]])
-		NEXT_OP(cpts->op_code);
+	{
+		mvprintw(1, 80, "unpress [%X]", x);
+		NEXT_OP(cpts->pc);
+	}
 	return (OP_SUCCESS);
 }
 
@@ -292,31 +327,40 @@ t_op_status	op_rand_reg(t_components *cpts)
 
 t_op_status	op_assign_delay_reg(t_components *cpts)
 {
-	(void)cpts;
+	u_int16_t	op_code;
+	u_int8_t	vx;
+
+	op_code = cpts->op_code;
+	vx = GET_VX(op_code);
+	cpts->vreg[vx] = cpts->delay_timer;
 	return (OP_SUCCESS);
 }
 
 t_op_status	op_assign_index(t_components *cpts)
 {
 	cpts->index_reg = GET_ADDRESS(cpts->op_code);
-	//printf("index equal %X, %d => %X\n", cpts->index_reg - START_ADDRESS, cpts->index_reg, cpts->ram[cpts->index_reg]);
 	return (OP_SUCCESS);
 }
 
 t_op_status	op_set_index(t_components *cpts)
 {
-	uint16_t	x;
+	uint16_t	vx;
 	uint16_t	op_code;
 
 	op_code = cpts->op_code;
-	x = GET_VX(op_code);
-	cpts->index_reg = GET_HEX_CHAR(x);
+	vx = GET_VX(op_code);
+	cpts->index_reg = GET_HEX_CHAR(vx);
 	return (OP_SUCCESS);
 }
 
 t_op_status	op_assign_delay(t_components *cpts)
 {
-	(void)cpts;
+	uint8_t		vx;
+	uint16_t	op_code;
+
+	op_code = cpts->op_code;
+	vx = GET_VX(op_code);
+	cpts->delay_timer = cpts->vreg[vx];
 	return (OP_SUCCESS);
 }
 
@@ -328,13 +372,25 @@ t_op_status	op_wait_key(t_components *cpts)
 
 t_op_status	op_assign_buzzer(t_components *cpts)
 {
-	(void)cpts;
+	uint8_t		vx;
+	uint16_t	op_code;
+
+	op_code = cpts->op_code;
+	vx = GET_VX(op_code);
+	cpts->sound_timer = cpts->vreg[vx];
 	return (OP_SUCCESS);
 }
 
 t_op_status	op_add_index(t_components *cpts)
 {
-	(void)cpts;
+	uint8_t		vx;
+	uint16_t	op_code;
+
+	op_code = cpts->op_code;
+	vx = GET_VX(op_code);
+	cpts->index_reg += cpts->vreg[vx];
+	if (cpts->index_reg >= TOTAL_RAM)
+		return (OP_FAIL);
 	return (OP_SUCCESS);
 }
 
@@ -405,7 +461,7 @@ t_op_status	op_operation_0(t_components *cpts)
 {	
 	u_int8_t	function;
 	
-	function = GET_FUNC(cpts->op_code);
+	function = GET_FUNC2(cpts->op_code);
 	switch (function)
 	{
 		case CLEAR_FUNC:

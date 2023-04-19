@@ -31,4 +31,9 @@ void	print_registers(t_components *cpts, int x, int y)
 {
 	for (int i = 0; i <= VF; i++)
 		mvprintw(i + y, x, "register [%d]:[%d]", i, cpts->vreg[i]);
+	for (int i = 0; i < TOTAL_STACK; i++)
+		mvprintw(i + y, x + 25, "stack [%d]:[%d]", i, cpts->stack[i]);
+	/*printw("\n");
+	printw("\n");
+	print_memory(cpts);*/
 }

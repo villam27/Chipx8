@@ -33,15 +33,16 @@ void	decode(t_components *cpts, FILE *debug_file)
 		id++;
 	}
 	cpts->id = id;
-	if (line < 500)
-		fprintf(debug_file, "Current op: (%d) %X => %s: %s\n", cpts->pc - 2, op_code, op_str[id], op_comment[id]);
+	if (line < 2000)
+		fprintf(debug_file, "OP: (%d) %X => %s: %s\n", cpts->pc - 2, op_code, op_str[id], op_comment[id]);
 	line++;
 }
 
-void	execute(t_components *cpts)
+void	execute(t_components *cpts, FILE *debug_file)
 {
 	//print_memory(cpts);
 	print_last_op(cpts, 1, 0, 30);
 	print_registers(cpts, 35, 0);
-	operations[cpts->id](cpts);
+	if (operations[cpts->id](cpts) == OP_FAIL)
+		fprintf(debug_file, "WARNING: LAST OP FAIL\n");
 }

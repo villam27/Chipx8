@@ -35,10 +35,14 @@ void	loop(t_main *main_data)
 		{
 			fetch(cpts);
 			decode(cpts, debug_file);
-			execute(cpts);
+			execute(cpts, debug_file);
 			event(window);
-			SDL_Delay(50);
+			SDL_Delay(10);
 		}
+		if (cpts->delay_timer > 0)
+			cpts->delay_timer--;
+		if (cpts->sound_timer > 0)
+			cpts->sound_timer--;
 		refresh();
 		render(window, cpts);
 		update(window);
