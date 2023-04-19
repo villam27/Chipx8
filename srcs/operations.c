@@ -1,4 +1,5 @@
 #include <operations.h>
+#include <global.h>
 
 t_op_status	op_clear(t_components *cpts)
 {
@@ -179,13 +180,25 @@ t_op_status	op_reg_no_equal(t_components *cpts)
 
 t_op_status	op_key_press(t_components *cpts)
 {
-	(void)cpts;
+	uint16_t	x;
+	uint16_t	op_code;
+
+	op_code = cpts->op_code;
+	x = GET_VX(op_code);
+	if (!cpts->key_state[keys[x]])
+		NEXT_OP(cpts->op_code);
 	return (OP_SUCCESS);
 }
 
 t_op_status	op_no_key_press(t_components *cpts)
 {
-	(void)cpts;
+	uint16_t	x;
+	uint16_t	op_code;
+
+	op_code = cpts->op_code;
+	x = GET_VX(op_code);
+	if (cpts->key_state[keys[x]])
+		NEXT_OP(cpts->op_code);
 	return (OP_SUCCESS);
 }
 
@@ -292,7 +305,12 @@ t_op_status	op_assign_index(t_components *cpts)
 
 t_op_status	op_set_index(t_components *cpts)
 {
-	(void)cpts;
+	uint16_t	x;
+	uint16_t	op_code;
+
+	op_code = cpts->op_code;
+	x = GET_VX(op_code);
+	cpts->index_reg = GET_HEX_CHAR(x);
 	return (OP_SUCCESS);
 }
 

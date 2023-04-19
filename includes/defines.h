@@ -11,6 +11,7 @@
 #define GET_ADDRESS(CODE)	((CODE) & 0x0FFF)
 #define GET_FUNC(CODE)		((CODE) & 0x000F)
 #define GET_FUNC2(CODE)		((CODE) & 0x00FF)
+#define GET_HEX_CHAR(POS)	((POS) * 5);
 
 #define NEXT_OP(CODE)		((CODE) += 2)
 

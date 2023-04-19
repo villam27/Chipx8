@@ -6,8 +6,9 @@
 #include <sys/types.h>
 
 extern const u_int16_t	op_id[MAX_OPERATIONS];
-extern const char			*op_str[MAX_OPERATIONS];
-extern const char			*op_comment[MAX_OPERATIONS];
-extern t_op_status	(*operations[MAX_OPERATIONS])(t_components *cpts);
+extern const char		*op_str[MAX_OPERATIONS];
+extern const char		*op_comment[MAX_OPERATIONS];
+extern t_op_status		(*operations[MAX_OPERATIONS])(t_components *cpts);
+extern uint8_t			keys[MAX_KEYS];
 
 #endif //GLOBAL_H

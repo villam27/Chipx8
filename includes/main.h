@@ -9,7 +9,6 @@
 #include <defines.h>
 #include <string.h>
 
-
 typedef struct stat	t_stat;
 
 typedef struct s_win_data
@@ -45,6 +44,7 @@ typedef struct s_components
 	t_display	diplay[HEIGHT][WIDTH];
 	t_key		keypad[MAX_KEYS];
 	size_t		id;
+	const uint8_t		*key_state;
 }	t_components;
 
 typedef struct s_rom_data
