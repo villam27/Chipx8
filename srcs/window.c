@@ -37,7 +37,7 @@ void	loop(t_main *main_data)
 			decode(cpts, debug_file);
 			execute(cpts, debug_file);
 			event(window);
-			//SDL_Delay(25);
+			//SDL_Delay(5);
 		}
 		if (cpts->delay_timer > 0)
 			cpts->delay_timer--;

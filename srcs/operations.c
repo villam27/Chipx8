@@ -388,7 +388,33 @@ t_op_status	op_assign_delay(t_components *cpts)
 
 t_op_status	op_wait_key(t_components *cpts)
 {
-	(void)cpts;
+	uint8_t			vx;
+	uint16_t		op_code;
+	static int16_t	pressed_key = -1;
+
+	op_code = cpts->op_code;
+	vx = GET_VX(op_code);
+	cpts->pc -= 2;
+	if (pressed_key == -1)
+	{
+		for (size_t i = 0; i < MAX_KEYS; i++)
+		{
+			if (cpts->key_state[keys[i]])
+			{
+				mvprintw(2, 60, "ok");
+				pressed_key = keys[i];
+			}
+		}
+	}
+	else
+	{
+		if (!cpts->key_state[pressed_key])
+		{
+			NEXT_OP(cpts->pc);
+			cpts->vreg[vx] = pressed_key;
+			pressed_key = -1;
+		}
+	}
 	return (OP_SUCCESS);
 }
 
