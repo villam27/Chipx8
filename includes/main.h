@@ -33,18 +33,18 @@ typedef struct s_win_data
 */
 typedef struct s_components
 {
-	u_int8_t	ram[TOTAL_RAM];
-	u_int8_t	vreg[16];
-	u_int8_t	delay_timer;
-	u_int8_t	sound_timer;
-	u_int16_t	stack[TOTAL_STACK];
-	u_int16_t	pc;
-	u_int16_t	op_code;
-	u_int16_t	index_reg;
-	t_display	diplay[HEIGHT][WIDTH];
-	t_key		keypad[MAX_KEYS];
-	size_t		id;
-	const uint8_t		*key_state;
+	u_int8_t		ram[TOTAL_RAM];
+	u_int8_t		vreg[16];
+	u_int8_t		delay_timer;
+	u_int8_t		sound_timer;
+	u_int16_t		stack[TOTAL_STACK];
+	u_int16_t		pc;
+	u_int16_t		op_code;
+	u_int16_t		index_reg;
+	t_display		diplay[HEIGHT][WIDTH];
+	t_key			keypad[MAX_KEYS];
+	size_t			id;
+	const uint8_t	*key_state;
 }	t_components;
 
 typedef struct s_rom_data

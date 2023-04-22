@@ -63,7 +63,7 @@ t_op_status	op_display(t_components *cpts)
 	op_code = cpts->op_code;
 	x = cpts->vreg[GET_VX(op_code)];
 	y = cpts->vreg[GET_VY(op_code)];
-	cpts->vreg[VF] = 0;
+	//cpts->vreg[VF] = 0;
 	len = GET_N(op_code);
 	for (int i = 0; i < len; i++)
 	{
@@ -74,7 +74,7 @@ t_op_status	op_display(t_components *cpts)
 			{
 				if (cpts->diplay[y + i][x + j] == WHITE)
 				{
-					cpts->vreg[VF] = 1;
+					cpts->vreg[VF] = !cpts->vreg[VF];
 					cpts->diplay[y + i][x + j] = BLACK;
 				}
 				else
@@ -87,13 +87,21 @@ t_op_status	op_display(t_components *cpts)
 
 t_op_status	op_bcd(t_components *cpts)
 {
-	/*uint8_t		vx;
+	uint8_t		vx;
 	uint16_t	op_code;
+	u_int16_t	i;
 
+	i = cpts->index_reg;
+	if (i > TOTAL_RAM - 2)
+		return (OP_FAIL);
 	op_code = cpts->op_code;
 	vx = GET_VX(op_code);
-	vx = cpts->vreg[vx];*/
-	(void)cpts;
+	vx = cpts->vreg[vx];
+	cpts->ram[i + 2] = vx % 10;
+	vx /= 10;
+	cpts->ram[i + 1] = vx % 10;
+	vx /= 10;
+	cpts->ram[i] = vx % 10;
 	return (OP_SUCCESS);
 }
 
@@ -209,31 +217,27 @@ t_op_status	op_reg_no_equal(t_components *cpts)
 
 t_op_status	op_key_press(t_components *cpts)
 {
-	uint16_t	x;
+	uint8_t		vx;
 	uint16_t	op_code;
 
 	op_code = cpts->op_code;
-	x = GET_VX(op_code);
-	if (!cpts->key_state[keys[x]])
-	{
-		mvprintw(0, 80, "press [%X]", x);
+	vx = GET_VX(op_code);
+	vx = cpts->vreg[vx];
+	if (!cpts->key_state[keys[vx]])
 		NEXT_OP(cpts->pc);
-	}
 	return (OP_SUCCESS);
 }
 
 t_op_status	op_no_key_press(t_components *cpts)
 {
-	uint16_t	x;
+	uint8_t		vx;
 	uint16_t	op_code;
 
 	op_code = cpts->op_code;
-	x = GET_VX(op_code);
-	if (cpts->key_state[keys[x]])
-	{
-		mvprintw(1, 80, "unpress [%X]", x);
+	vx = GET_VX(op_code);
+	vx = cpts->vreg[vx];
+	if (cpts->key_state[keys[vx]])
 		NEXT_OP(cpts->pc);
-	}
 	return (OP_SUCCESS);
 }
 
@@ -275,11 +279,17 @@ t_op_status	op_add_reg(t_components *cpts)
 	u_int16_t	op_code;
 	u_int8_t	vx;
 	u_int8_t	vy;
+	u_int16_t	temp;
 
 	op_code = cpts->op_code;
 	vx = GET_VX(op_code);
 	vy = GET_VY(op_code);
-	cpts->vreg[vx] += cpts->vreg[vy];
+	temp = cpts->vreg[vx] + cpts->vreg[vy];
+	cpts->vreg[vx] = temp;
+	if (temp > 255)
+		cpts->vreg[VF] = 1;
+	else
+		cpts->vreg[VF] = 0;
 	return (OP_SUCCESS);
 }
 
@@ -288,11 +298,17 @@ t_op_status	op_left_sub_reg(t_components *cpts)
 	u_int16_t	op_code;
 	u_int8_t	vx;
 	u_int8_t	vy;
+	int16_t		temp;
 
 	op_code = cpts->op_code;
 	vx = GET_VX(op_code);
 	vy = GET_VY(op_code);
-	cpts->vreg[vx] -= cpts->vreg[vy];
+	temp = cpts->vreg[vx] - cpts->vreg[vy];
+	cpts->vreg[vx] = (u_int16_t)temp;
+	if (temp < 0)
+		cpts->vreg[VF] = 0;
+	else
+		cpts->vreg[VF] = 1;
 	return (OP_SUCCESS);
 }
 
@@ -301,11 +317,17 @@ t_op_status	op_right_sub_reg(t_components *cpts)
 	u_int16_t	op_code;
 	u_int8_t	vx;
 	u_int8_t	vy;
+	int16_t		temp;
 
 	op_code = cpts->op_code;
 	vx = GET_VX(op_code);
 	vy = GET_VY(op_code);
-	cpts->vreg[vx] = (cpts->vreg[vy] - cpts->vreg[vx]);
+	temp = cpts->vreg[vy] - cpts->vreg[vx];
+	cpts->vreg[vx] = (u_int16_t)temp;
+	if (temp < 0)
+		cpts->vreg[VF] = 0;
+	else
+		cpts->vreg[VF] = 1;
 	return (OP_SUCCESS);
 }
 
@@ -344,7 +366,7 @@ t_op_status	op_assign_index(t_components *cpts)
 
 t_op_status	op_set_index(t_components *cpts)
 {
-	uint16_t	vx;
+	uint8_t		vx;
 	uint16_t	op_code;
 
 	op_code = cpts->op_code;
@@ -441,7 +463,7 @@ t_op_status	op_bitwise_rshift(t_components *cpts)
 	op_code = cpts->op_code;
 	vx = GET_VX(op_code);
 	cpts->vreg[VF] = (cpts->vreg[vx] & 0x1);
-	cpts->vreg[vx] = (cpts->vreg[vx] >> 0x0001);
+	cpts->vreg[vx] = (cpts->vreg[vx] >> 1);
 	return (OP_SUCCESS);
 }
 
@@ -502,13 +524,13 @@ t_op_status	op_operation_8(t_components *cpts)
 			return (op_left_sub_reg(cpts));
 			break;
 		case LSHIFT_FUNC:
-			return (op_bitwise_lshift(cpts));
+			return (op_bitwise_rshift(cpts));
 			break;
 		case RSUBST_FUNC:
 			return (op_right_sub_reg(cpts));
 			break;
 		case RSHIFT_FUNC:
-			return (op_bitwise_rshift(cpts));
+			return (op_bitwise_lshift(cpts));
 			break;
 		default:
 			return (OP_FAIL);

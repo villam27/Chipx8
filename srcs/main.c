@@ -19,7 +19,7 @@ int	main(int argc, char **argv)
 	initscr();
 	main_data = load_main(argc, argv);
 	if (!main_data)
-		return (perror(argv[1]), 1);
+		return (endwin(), perror(argv[1]), 1);
 	loop(main_data);
 	destroy_main(main_data);
 	endwin();

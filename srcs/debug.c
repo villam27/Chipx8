@@ -33,6 +33,7 @@ void	print_registers(t_components *cpts, int x, int y)
 		mvprintw(i + y, x, "register [%d]:[%d]", i, cpts->vreg[i]);
 	for (int i = 0; i < TOTAL_STACK; i++)
 		mvprintw(i + y, x + 25, "stack [%d]:[%d]", i, cpts->stack[i]);
+	mvprintw(5, x + 45, "Delay: [%d]", cpts->delay_timer);
 	/*printw("\n");
 	printw("\n");
 	print_memory(cpts);*/
